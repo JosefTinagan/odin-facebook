@@ -1,5 +1,13 @@
 <h1>List of Users</h1>
 
 <% @users.each do |user| %>
-	<p><%= user.email %></p>
+	<p><%= user.email %>
+	<% if user != current_user %> 
+		, <%= form_for(current_user.friend_requests.build) do |f| %>
+			<div><%= hidden_field_tag :friend_id, user.id %></div>
+			<%= f.submit "Add Friend", class: "btn btn-primary" %>
+		  <% end %> 
+	<% end %>
+	</p>
+
 <% end %>
