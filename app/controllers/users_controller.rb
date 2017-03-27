@@ -4,6 +4,7 @@ class UsersController < ApplicationController
 
 	def index
 		@users = User.all
+		@friend_requests = FriendRequest.all
 	end
 
 end

@@ -1,13 +1,22 @@
 <h1>List of Users</h1>
 
 <% @users.each do |user| %>
-	<p><%= user.email %>
-	<% if user != current_user %> 
-		, <%= form_for(current_user.friend_requests.build) do |f| %>
-			<div><%= hidden_field_tag :friend_id, user.id %></div>
-			<%= f.submit "Add Friend", class: "btn btn-primary" %>
-		  <% end %> 
-	<% end %>
-	</p>
+	<div class="add_friend">
+		<table>
+		<tr><%= user.email %></tr>
+		<tr class="form-row">
+		<% if friend_request = friend_request_sent?(user) %>
+				<%= button_to "Cancel Request", friend_request_path(friend_request.id), method: :delete %>
+		<% elsif current_user != user %>
+
+			<%= form_for(current_user.friend_requests.build) do |f| %>
+						<%= hidden_field_tag :friend_id, user.id %>
+						<%= f.submit "Add Friend", class: "btn btn-primary" %>
+			<% end %> 
+		<% end %>
+		</tr>
+		</table>
+		<br>
+	</div>
 
 <% end %>
