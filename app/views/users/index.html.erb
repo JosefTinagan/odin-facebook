@@ -5,13 +5,21 @@
 		<table>
 		<tr><%= user.email %></tr>
 		<tr class="form-row">
-		<% if friend_request = friend_request_sent?(user) %>
+		<% if friend = friend?(current_user, user) %>
+			<%= button_to "Remove as Friend", friendship_path(friend.id), method: :delete %>
+		<% elsif friend_request = friend_request_sent?(current_user, user) %>
 				<%= button_to "Cancel Request", user_friend_request_path(current_user.id,friend_request.id), method: :delete %>
+
+		<% elsif friend_request = friend_request_sent?(user, current_user)%>
+			<%= form_for(current_user.friendships.build, url: friendships_path) do |f| %>
+				<%= hidden_field_tag :friend_id, user.id %>
+				<%= f.submit "Accept Friend Request", class: "btn btn-primary" %>
+			<% end %>
 		<% elsif current_user != user %>
 
 			<%= form_for(current_user.friend_requests.build, url: user_friend_requests_path(current_user.id)) do |f| %>
-						<%= hidden_field_tag :friend_id, user.id %>
-						<%= f.submit "Add Friend", class: "btn btn-primary" %>
+				<%= hidden_field_tag :friend_id, user.id %>
+				<%= f.submit "Add Friend", class: "btn btn-primary" %>
 			<% end %> 
 		<% end %>
 		</tr>
