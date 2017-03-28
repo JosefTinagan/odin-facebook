@@ -6,10 +6,10 @@
 		<tr><%= user.email %></tr>
 		<tr class="form-row">
 		<% if friend_request = friend_request_sent?(user) %>
-				<%= button_to "Cancel Request", friend_request_path(friend_request.id), method: :delete %>
+				<%= button_to "Cancel Request", user_friend_request_path(current_user.id,friend_request.id), method: :delete %>
 		<% elsif current_user != user %>
 
-			<%= form_for(current_user.friend_requests.build) do |f| %>
+			<%= form_for(current_user.friend_requests.build, url: user_friend_requests_path(current_user.id)) do |f| %>
 						<%= hidden_field_tag :friend_id, user.id %>
 						<%= f.submit "Add Friend", class: "btn btn-primary" %>
 			<% end %> 
