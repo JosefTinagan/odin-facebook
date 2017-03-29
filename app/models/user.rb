@@ -13,4 +13,6 @@ class User < ApplicationRecord
 	has_many :active_friendships, through: :friendships, source: :friend
 	has_many :inverse_friendships, class_name: 'Friendship', foreign_key: :friend_id
 	has_many :inactive_friendships, through: :inverse_friendships, source: :user
+
+	has_many :posts, foreign_key: :author_id
 end
