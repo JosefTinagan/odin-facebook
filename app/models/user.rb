@@ -15,4 +15,5 @@ class User < ApplicationRecord
 	has_many :inactive_friendships, through: :inverse_friendships, source: :user
 
 	has_many :posts, foreign_key: :author_id
+	has_many :likes
 end
