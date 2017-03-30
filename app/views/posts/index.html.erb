@@ -1,0 +1,16 @@
+<%= form_for(@post, url: user_posts_path ) do |f| %>
+	<div class="field">
+		<%= f.text_area :content, placeholder: "Say something..." %>
+	</div>
+	<%= f.submit "Post", class: "btn btn-primary" %>
+<% end %>
+
+<% if current_user.posts.any? %>
+
+<% current_user.posts.each do |post| %>
+	<div class="post_block">
+		<%= post.author.name %> : <%= post.content %>
+	</div>
+<% end %>
+
+<% end %>
