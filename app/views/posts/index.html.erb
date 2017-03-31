@@ -1,4 +1,4 @@
-<%= form_for(@post, url: user_posts_path ) do |f| %>
+<%= form_for(@post, url: posts_path ) do |f| %>
 	<div class="field">
 		<%= f.text_area :content, placeholder: "Say something..." %>
 	</div>
@@ -7,9 +7,23 @@
 
 <% if current_user.posts.any? %>
 
-<% current_user.posts.each do |post| %>
+<% current_user.feed.each do |post| %>
 	<div class="post_block">
-		<%= post.author.name %> : <%= post.content %>
+		<p><%= post.author.name %></p>
+		<p><%= post.created_at %></p>
+		<p><%= post.content %> </p>
+		<% if !(liked = liked?(post))%>		
+			<%= form_for(@like, url: likes_path) do |f| %>
+	        	<%= hidden_field_tag :post_id, post.id %>
+	            <%= f.submit "Like", class: "btn btn-primary" %>
+	        <% end %>
+	    <% else %>
+			<%= button_to "Unlike", like_path(liked.id), method: :delete %>
+	    <% end %>
+	    <p></p>
+	    <%= form_for(current.user.build, url: %>
+
+	    <% end %>
 	</div>
 <% end %>
 

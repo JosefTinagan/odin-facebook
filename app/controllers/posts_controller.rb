@@ -1,15 +1,16 @@
 class PostsController < ApplicationController
   def index
-  	@posts = Post.where(author_id: current_user.id)
   	@post = current_user.posts.build if user_signed_in?
+  	@like =current_user.likes.build if user_signed_in?
   end
 
   def create
-  	@post = Post.new(post_params)
+  	@post = current_user.posts.new(post_params)
   	if @post.save
   		flash[:success] = "Posted"
-  		redirect_to user_posts_path
+  		redirect_to posts
   	else
+  		flash[:danger] = "Post unsuccessful"
   		render 'index'
   	end
   end
