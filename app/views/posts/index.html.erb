@@ -21,8 +21,17 @@
 			<%= button_to "Unlike", like_path(liked.id), method: :delete %>
 	    <% end %>
 	    <p></p>
-	    <%= form_for(current.user.build, url: %>
+	    <% if post.comments.any? %>
+			<% post.comments.each do |comment| %>
+				<%= comment.author.name %>:
+				<%= comment.content %>
+			<% end %>
+	    <% end %>
+	    <%= form_for(current_user.comments.build, url: comments_path) do |f| %>
+			<%= hidden_field_tag :post_id, post.id %>
+			<%= text_area_tag :content %>
 
+			<%= f.submit "Comment", class: "btn btn-primary" %>
 	    <% end %>
 	</div>
 <% end %>
