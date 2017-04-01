@@ -2,3 +2,20 @@
 
 <%= gravatar_for(@user) %>
 
+
+<br>
+Name: <%= @user.name %>
+<br>
+Email: <%= @user.email %>
+
+<br>
+<%= @user.name %>'s Posts
+<br>
+<div class="current_user_posts">
+<% if @user.posts.any? %>
+	<% @user.posts.each do |post| %>
+		<%= post.content %>
+		<br>
+	<% end %>
+<% end %>
+</div>
