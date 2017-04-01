@@ -21,12 +21,23 @@
 			<%= button_to "Unlike", like_path(liked.id), method: :delete %>
 	    <% end %>
 	    <p></p>
+		
+		<% if post.likes.any? %>
+			<%= pluralize(post.likes.count, "like") %>,
+		<% end %>
+
+		<% if post.comments.any? %>
+			<%= pluralize(post.comments.count, 'comment') %>
+		<% end %>
+		<p></p>
+		
 	    <% if post.comments.any? %>
 			<% post.comments.each do |comment| %>
 				<%= comment.author.name %>:
 				<%= comment.content %>
 			<% end %>
 	    <% end %>
+
 	    <%= form_for(current_user.comments.build, url: comments_path) do |f| %>
 			<%= hidden_field_tag :post_id, post.id %>
 			<%= text_area_tag :content %>
