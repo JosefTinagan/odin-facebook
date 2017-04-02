@@ -11,6 +11,8 @@ gem 'rails', '~> 5.0.2'
 
 gem 'devise'
 gem 'bootstrap-sass', '3.3.6'
+gem 'omniauth-facebook'
+gem 'figaro'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
