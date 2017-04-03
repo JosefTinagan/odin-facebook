@@ -252,8 +252,8 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   config.omniauth :facebook, ENV["FACEBOOK_APP_ID"], ENV["FACEBOOK_APP_SECRET"],
-  								, callback_url: "https://aqueous-badlands-57310.herokuapp.com/users/auth/facebook/callback"
-                  #,callback_url: "http://localhost:3000/users/auth/facebook/callback"
+  								callback_url: "https://aqueous-badlands-57310.herokuapp.com/users/auth/facebook/callback"
+                  #callback_url: "http://localhost:3000/users/auth/facebook/callback"
                  # ,:client_options => {:ssl => {:ca_path => '/etc/ssl/certs'}}
 
   # ==> Warden configuration
