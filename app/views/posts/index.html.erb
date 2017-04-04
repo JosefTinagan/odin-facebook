@@ -3,48 +3,59 @@
 		<%= f.text_area :content, placeholder: "Say something..." %>
 	</div>
 	<%= f.submit "Post", class: "btn btn-primary" %>
+	<span class="picture">
+		<%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
+	</span>
 <% end %>
 
 <% if current_user.posts.any? %>
-
-<% current_user.feed.each do |post| %>
-	<div class="post_block">
-		<p><%= post.author.name %></p>
-		<p><%= post.created_at %></p>
-		<p><%= post.content %> </p>
-		<% if !(liked = liked?(post))%>		
-			<%= form_for(@like, url: likes_path) do |f| %>
-	        	<%= hidden_field_tag :post_id, post.id %>
-	            <%= f.submit "Like", class: "btn btn-primary" %>
-	        <% end %>
-	    <% else %>
-			<%= button_to "Unlike", like_path(liked.id), method: :delete %>
-	    <% end %>
-	    <p></p>
-		
-		<% if post.likes.any? %>
-			<%= pluralize(post.likes.count, "like") %>,
-		<% end %>
-
-		<% if post.comments.any? %>
-			<%= pluralize(post.comments.count, 'comment') %>
-		<% end %>
-		<p></p>
-		
-	    <% if post.comments.any? %>
-			<% post.comments.each do |comment| %>
-				<%= comment.author.name %>:
-				<%= comment.content %>
+	<% current_user.feed.each do |post| %>
+		<div class="post_block">
+			<p><%= post.author.name %></p>
+			<p><%= post.created_at %></p>
+			<p><%= post.content %> </p>
+			<%= image_tag post.picture.url if post.picture? %>
+			<% if !(liked = liked?(post))%>		
+				<%= form_for(@like, url: likes_path) do |f| %>
+		        	<%= hidden_field_tag :post_id, post.id %>
+		            <%= f.submit "Like", class: "btn btn-primary" %>
+		        <% end %>
+		    <% else %>
+				<%= button_to "Unlike", like_path(liked.id), method: :delete %>
+		    <% end %>
+		    <p></p>
+			
+			<% if post.likes.any? %>
+				<%= pluralize(post.likes.count, "like") %>,
 			<% end %>
-	    <% end %>
 
-	    <%= form_for(current_user.comments.build, url: comments_path) do |f| %>
-			<%= hidden_field_tag :post_id, post.id %>
-			<%= text_area_tag :content %>
+			<% if post.comments.any? %>
+				<%= pluralize(post.comments.count, 'comment') %>
+			<% end %>
+			<p></p>
+			
+		    <% if post.comments.any? %>
+				<% post.comments.each do |comment| %>
+					<%= comment.author.name %>:
+					<%= comment.content %>
+				<% end %>
+		    <% end %>
 
-			<%= f.submit "Comment", class: "btn btn-primary" %>
-	    <% end %>
-	</div>
+		    <%= form_for(current_user.comments.build, url: comments_path) do |f| %>
+				<%= hidden_field_tag :post_id, post.id %>
+				<%= text_area_tag :content %>
+
+				<%= f.submit "Comment", class: "btn btn-primary" %>
+		    <% end %>
+		</div>
+	<% end %>
 <% end %>
 
-<% end %>
+<script type="text/javascript">
+	$('#post_picture').bind('change', function(){
+		var size_in_megabytes = this.files[0].size/1024/1024;
+		if (size_in_megabytes > 5){
+			alert('Maximum file size is 5MB. Please choose a smaller file.');
+		}
+	});
+</script>
