@@ -24,6 +24,9 @@ class User < ApplicationRecord
 	# Association with Comment Model
 	has_many :comments, foreign_key: :author_id
 
+	mount_uploader :avatar, AvatarUploader
+	validate :avatar_size
+
 	# Class method to get all the posts of the user and his/her friends
 	def feed
 		friend_ids = "SELECT friend_id FROM friendships WHERE user_id = :author_id"
@@ -42,4 +45,13 @@ class User < ApplicationRecord
 			# user.skip_confirmation
 		end
 	end
+
+	private
+
+		#Validate the size of an uploaded avatar
+		def avatar_size
+			if avatar.size > 5.megabytes
+				errors.add(:avatar, "should be less than 5MB")
+			end
+		end
 end
